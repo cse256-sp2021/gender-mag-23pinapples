@@ -1,5 +1,7 @@
 // Configuration
+
 show_starter_dialogs = false // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
+
 
 // ---- Set up main Permissions dialog ----
 
@@ -12,6 +14,7 @@ perm_dialog = define_new_dialog('permdialog', title='Permissions', options = {
     buttons: {
         OK:{
             text: "Done",
+
             id: "perm-dialog-ok-button",
             click: function() {
                 $( this ).dialog( "close" );
@@ -19,6 +22,7 @@ perm_dialog = define_new_dialog('permdialog', title='Permissions', options = {
         },
         Advanced: {
             text: "More Permissions",
+
             id: "perm-dialog-advanced-button",
             click: function() {
                 open_advanced_dialog(perm_dialog.attr('filepath'))
@@ -49,6 +53,7 @@ file_permission_users.css({
 
 // Make button to add a new user to the list:
 perm_add_user_select = define_new_user_select_field('perm_add_user', 'Add User', on_user_change = function(selected_user){
+
     let filepath = perm_dialog.attr('filepath')
     if(selected_user && (selected_user.length > 0) && (selected_user in all_users)) { // sanity check that a user is actually selected (and exists)
         let expected_user_elem_id = `permdialog_file_user_${selected_user}`
@@ -120,6 +125,7 @@ are_you_sure_dialog.text('Do you want to remove permissions for this user?')
 
 // Make actual "remove" button:
 perm_remove_user_button  = $('<button id="perm_remove_user" class="ui-button ui-widget ui-corner-all">Remove User</button>')
+
 perm_remove_user_button.click(function(){
     // Get the current user and filename we are working with:
     let selected_username = file_permission_users.attr('selected_item')
@@ -325,6 +331,7 @@ let adv_contents = $(`#advdialog`).dialog({
     buttons: {
         OK: {
             text: "Done",
+
             id: "advanced-dialog-ok-button",
             click: function() {
                 $( this ).dialog( "close" );
