@@ -11,14 +11,14 @@ perm_dialog = define_new_dialog('permdialog', title='Permissions', options = {
     width: 400,
     buttons: {
         OK:{
-            text: "OK",
+            text: "Done",
             id: "perm-dialog-ok-button",
             click: function() {
                 $( this ).dialog( "close" );
             }
         },
         Advanced: {
-            text: "Advanced",
+            text: "More Permissions",
             id: "perm-dialog-advanced-button",
             click: function() {
                 open_advanced_dialog(perm_dialog.attr('filepath'))
@@ -48,7 +48,7 @@ file_permission_users.css({
 })
 
 // Make button to add a new user to the list:
-perm_add_user_select = define_new_user_select_field('perm_add_user', 'Add...', on_user_change = function(selected_user){
+perm_add_user_select = define_new_user_select_field('perm_add_user', 'Add User', on_user_change = function(selected_user){
     let filepath = perm_dialog.attr('filepath')
     if(selected_user && (selected_user.length > 0) && (selected_user in all_users)) { // sanity check that a user is actually selected (and exists)
         let expected_user_elem_id = `permdialog_file_user_${selected_user}`
@@ -67,7 +67,7 @@ perm_add_user_select.find('span').hide()// Cheating a bit - just show the button
 cant_remove_dialog = define_new_dialog('cant_remove_inherited_dialog', 'Security', {
     buttons: {
         OK: {
-            text: "OK",
+            text: "Done",
             id: "cant-remove-ok-button",
             click: function() {
                 $( this ).dialog( "close" );
@@ -119,7 +119,7 @@ let are_you_sure_dialog = define_new_dialog('are_you_sure_dialog', "Are you sure
 are_you_sure_dialog.text('Do you want to remove permissions for this user?')
 
 // Make actual "remove" button:
-perm_remove_user_button  = $('<button id="perm_remove_user" class="ui-button ui-widget ui-corner-all">Remove</button>')
+perm_remove_user_button  = $('<button id="perm_remove_user" class="ui-button ui-widget ui-corner-all">Remove User</button>')
 perm_remove_user_button.click(function(){
     // Get the current user and filename we are working with:
     let selected_username = file_permission_users.attr('selected_item')
@@ -324,7 +324,7 @@ let adv_contents = $(`#advdialog`).dialog({
     appendTo: "#html-loc",
     buttons: {
         OK: {
-            text: "OK",
+            text: "Done",
             id: "advanced-dialog-ok-button",
             click: function() {
                 $( this ).dialog( "close" );
@@ -485,7 +485,7 @@ let user_select_contents = $("#user_select_dialog").dialog({
             },
         },
         OK: {
-            text: "OK",
+            text: "Done",
             id: "user-select-ok-button",
             click: function() {
                 // populate field with user name (assume these are stored in attributes)
@@ -510,7 +510,7 @@ let perm_entry_dialog = $('#permentry').dialog({
     position: { my: "top", at: "top", of: $('#html-loc') },
     buttons: {
         OK: {
-            text: "OK",
+            text: "Done",
             id: "permission-entry-ok-button",
             click: function() {
                 open_advanced_dialog($('#advdialog').attr('filepath') )// redo advanced dialog (recalc permissions)
@@ -624,7 +624,7 @@ You will still get paid if you don't finish the task, but you have to try.
     },
     buttons:{
         OK: {
-            text: "OK",
+            text: "Done",
             id: "start-dialog-ok-button",
             click: function() {
                 $( this ).dialog( "close" );
