@@ -511,6 +511,14 @@ function define_new_user_select_field(id_prefix, select_button_text, on_user_cha
 //     ${ explanation.text_explanation ? `(${explanation.text_explanation})`  : '' }
 //     `
 // }
+//user_obj, file_obj, permission_to_check, explain
+function get_explanation_text(user_obj, file_obj, permission_to_check, explain) {
+    if(explain.is_allowed){
+        return "Currently " + user_obj + " CAN " + permission_to_check + " on "  + file_obj + " Click the lock icon next to the file, select a givin user, and use the check boxes to assign permissions"
+    }else{
+        return "Currently " + user_obj + " CANNOT " + permission_to_check + " on " + file_obj + " Click the lock icon next to the file, select a givin user, and use the check boxes to assign permissions"
+    }
+}
 
 
 //---- some universal HTML set-up so you don't have to do it in each wrapper.html ----

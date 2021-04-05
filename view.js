@@ -4,7 +4,7 @@ var perm_p = define_new_effective_permissions(panel_p, add_info_col = true, whic
 $('#sidepanel').append(perm_p)
 $('#panel_p').attr('filepath', '/C')
 var select_s = "select_s"
-var button_text = "button_text"
+var button_text = "Select User to View Permission"
 var newUserSelect = define_new_user_select_field(select_s, button_text, on_user_change = function(selected_user){
     $('#panel_p').attr('username', selected_user)
 })
@@ -23,7 +23,8 @@ $('.fa.fa-info-circle.perm_info').click(function(){
     var permission_to_check = $( this ).attr('permission_name')
   
     var explain = allow_user_action(file_obj, user_obj, permission_to_check, explain_why = true)
-    var explain_text = get_explanation_text(explain)
+    //var explain_text = get_explanation_text(explain)
+    var explain_text = get_explanation_text(user_obj, file_obj, permission_to_check, explain)
     $('#dialog_d').text(explain_text)
 })
 
@@ -82,13 +83,14 @@ $('.folder').accordion({
 // -- Connect File Structure lock buttons to the permission dialog --
 
 // open permissions dialog when a permission button is clicked
+let pathselect =""
 $('.permbutton').click( function( e ) {
     // Set the path and open dialog:
     let path = e.currentTarget.getAttribute('path');
     perm_dialog.attr('filepath', path)
     perm_dialog.dialog('open')
     //open_permissions_dialog(path)
-
+    pathselect = perm_dialog.attr('filepath')
     // Deal with the fact that folders try to collapse/expand when you click on their permissions button:
     e.stopPropagation() // don't propagate button click to element underneath it (e.g. folder accordion)
     // Emit a click for logging purposes:
@@ -97,4 +99,3 @@ $('.permbutton').click( function( e ) {
 
 
 // ---- Assign unique ids to everything that doesn't have an ID ----
-$('#html-loc').find('*').uniqueId() 
