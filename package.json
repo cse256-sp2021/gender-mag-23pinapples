@@ -5,6 +5,7 @@
     "main": "controller.js",
     "url": "https://cse256-sp2021.github.io/gender-mag-23pinapples/",
 
+    
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "sandbox": "node ./deploy/sandbox.js",
