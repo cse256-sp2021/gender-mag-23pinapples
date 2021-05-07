@@ -479,7 +479,7 @@ function open_user_select_dialog(to_populate_id) {
 function define_new_user_select_field(id_prefix, select_button_text, on_user_change = function(selected_user){}){
     // Make the element:
     let sel_section = $(`<div id="${id_prefix}_line" class="section">
-            <span id="${id_prefix}_field" class="ui-widget-content" style="width: 80%;display: inline-block;">&nbsp</span>
+            <span id="${id_prefix}_field" class="ui-widget-content" style="width: 80%;display: inline-block;">Select user/group</span>
             <button id="${id_prefix}_button" class="ui-button ui-widget ui-corner-all">${select_button_text}</button>
         </div>`)
 

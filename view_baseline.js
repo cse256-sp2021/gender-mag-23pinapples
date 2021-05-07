@@ -1,6 +1,6 @@
 // Configuration
 
-show_starter_dialogs = true // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
+show_starter_dialogs = false // set this to "false" to disable the survey and 3-minute timer. Set to "true" before submitting to MTurk!!
 
 
 // ---- Set up main Permissions dialog ----
@@ -269,7 +269,7 @@ function open_advanced_dialog(file_path) {
     $('#adv_owner_user_list').append(all_user_list)
 
     // open dialog:
-    $(`#advdialog`).dialog('open')
+    //$(`#advdialog`).dialog('open')
 }
 
 // Update Effective User display
@@ -522,6 +522,7 @@ let perm_entry_dialog = $('#permentry').dialog({
             id: "permission-entry-ok-button",
             click: function() {
                 open_advanced_dialog($('#advdialog').attr('filepath') )// redo advanced dialog (recalc permissions)
+                let filepath = $('#advdialog').attr('filepath');
                 perm_dialog.attr('filepath', filepath) // reload contents of permissions dialog
                 $( this ).dialog( "close" );
             }
@@ -529,15 +530,25 @@ let perm_entry_dialog = $('#permentry').dialog({
     }
 })
 
+$('#perm_entry_username').html('Select User/Group');
+
+const read = '<span style="color: blue;">■</span>';
+const write = '<span style="color: green;">▲</span>';
+const modify = '<span style="color: orange;">●</span>';
+const execute = '<span style="color: red;">◆</span>';
+const symbols = [execute, read, read, read, `${modify}${write}`, `${modify}${write}`, `${modify}${write}`, `${modify}${write}`, modify, modify, read, '', ''];
+
+let i=0;
 for(let p of Object.values(permissions)){
     let row = $(`<tr id="perm_entry_row_${p}">
-        <td id="perm_entry_row_${p}_cell">${p}</td>
-    </tr>`)
+        <td id="perm_entry_row_${p}_cell">${p} ${symbols[i]}</td>
+    </tr>`);
+    i++;
     for(let ace_type of ['allow', 'deny']) {
         row.append(`<td id="perm_entry_row_${p}_${ace_type}" class="perm_entry_checkcell" perm="${p}" type="${ace_type}"></td>`)
     }
     $('#perm_entry_table').append(row)
-}  
+}   
 
 $('#adv_perm_edit').click(function(){
     let filepath = $('#advdialog').attr('filepath')
