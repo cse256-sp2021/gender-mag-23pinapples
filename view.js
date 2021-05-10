@@ -27,10 +27,9 @@
 //     var explain_text = get_explanation_text(user_obj, file_obj, permission_to_check, explain)
 //     $('#dialog_d').text(explain_text)
 // })
-let stuff = $('#adv_permissions_tab');
-$('#sidepanel').append(stuff);
-// $('#sidepanel').append(`<div id="title-grp"><h2 id="paneltitle"><h2></div>`);
-// $('#sidepanel h2').css('padding-left', '10px');
+let adv_perm_tab = $('#adv_permissions_tab');
+adv_perm_tab.append($('#adv_permissions_tab'))
+$('#sidepanel').append(adv_perm_tab);
 $('#sidepanel h2').css('padding-top', '10px');
 let ep1 = define_new_effective_permissions('ep1', true);
 let usf1 = define_new_user_select_field('usf1', 'Select User/Group', function(selected_user) {
@@ -38,20 +37,8 @@ let usf1 = define_new_user_select_field('usf1', 'Select User/Group', function(se
     $('.perm_info').show();
 });
 
-//"adv_perm_object_name"
-let editButton = $(`<button>Edit Permissions</button>`);
-editButton.click(function() {
-    open_advanced_dialog(ep1.attr('filepath'));
-});
-editButton.css({'margin-top': '10px','text-align': 'center', 'cursor': 'pointer', 'background': 'none', padding: '10px', 'font-size': '16px', 'border-radius': '8px', 'border': '2px solid #008CBA', 'background': '#008CBA', color: 'white'});
-editButton.hover(
-    function(){
-        editButton.css({'background': 'none', color: '#008CBA'});
-    },
-    function(){
-        editButton.css({'background': '#008CBA', color: 'white'});
-    }
-)
+$('#adv_permiossions_tab').append(perm_remove_user_button);
+
 
 ep1.css({'text-align': 'left'});
 // $('#sidepanel').append(editButton);
@@ -63,8 +50,69 @@ $('.perm_info').click(function(){
 });
 $('.perm_info').hide();
 $('#sidepanel').hide();
+$('#ui-id-53').hide();
+$('#legend-symbols').append('<p>Filter by types of permissions:</p><p><button id="readButton">Read: <span style="color: blue; padding-right: 10px;">■</span></button> <button id="writeButton">Write: <span style="color: orange; padding-right: 10px;">●</span></button> <button id="modifyButton"> Modify: <span style="color: red; padding-right: 10px;">▲</span></button> <button id="executeButton">Execute: <span style="color: green;">◆</span></button></p>');
+$('#readButton').click(function(){
 
-$('#legend-symbols').append('<p>Types of permissions:</p><p>Read: <span style="color: blue; padding-right: 10px;">■</span> Write: <span style="color: green; padding-right: 10px;">▲</span>  Modify: <span style="color: orange; padding-right: 10px;">●</span>  Execute: <span style="color: red;">◆</span></p>');
+    if ($('*tr[id*=read]').css('background-color')==='rgb(186, 186, 186)'){
+
+        $('*tr[id*=read]').css('background-color', 'rgba(0, 0, 0, 0)');
+    }
+    else{
+         $('*tr[id*=read]').css('background-color', 'rgb(186, 186, 186)');
+    }
+   
+})
+
+$('#writeButton').click(function(){
+    if ($('*td[id*=write]').css('background-color')==='rgb(186, 186, 186)'){
+        $('*td[id*=write]').css('background-color', 'rgba(0, 0, 0, 0)');
+    }
+   
+    else {
+         $('*td[id*=write]').css('background-color', 'rgb(186, 186, 186)'); 
+        
+    }
+   
+})
+
+$('#modifyButton').click(function(){
+ 
+    if ($('*td[id*=modify]').css('background-color')==='rgb(186, 186, 186)'){
+        $('*td[id*=modify]').css('background-color', 'rgba(0, 0, 0, 0)');
+    }
+    else{
+         $('*td[id*=modify]').css('background-color', 'rgb(186, 186, 186)');
+    }
+   
+})
+
+
+$('#executeButton').click(function(){
+    if ($('*tr[id*=execute]').css('background-color')==='rgb(186, 186, 186)'){
+        $('*tr[id*=execute]').css('background-color', 'rgba(0, 0, 0, 0)');
+    }
+    else{
+         $('*tr[id*=execute]').css('background-color', 'rgb(186, 186, 186)');
+    }
+   
+})
+
+
+var hintList = {
+"add_full_permissions": "select 'new manager', click allow for all permissions.",
+"add_new_user": "Allow all except 'traverse folder/execute file', 'change permissions', and 'take ownership'. " ,
+"intern_permissions": "allow create and write permissions, deny delete permissions.",
+"let_ta_modify": "hint1",
+"lost_inheritance": "click on 'Permissions' for Lecture2.txt and Lecture3.txt, then check 'Include inherited Permissions' for both files on the side panel.",
+"remove_direct_permission": "select 'employee 3', then deny all permissions with the 'modify' tag.",
+"remove_inherited_permission": "deny all permissions with the 'modify' tag.",
+"remove_user_with_inheritance": "hint1",
+"restrict_group_member": "deny all permissions with the 'modify' tag."
+};
+var task = document.getElementById('scenario_context');
+var task_tag = task.dataset.tag;
+document.getElementById("hint").innerHTML = "Hint: " + hintList[task_tag];
 // ---- Display file structure ----
 
 
@@ -148,6 +196,7 @@ $('.viewbutton').click( function( e ) {
     let path = e.currentTarget.getAttribute('path');
     ep1.attr('filepath', path);
     $('#paneltitle').text(`Overall Permissions for ${$(this).attr('path')}`);
+    
     open_advanced_dialog(path);
     $('.viewbutton').css({'background': '#f6f6f6', 'color': 'black'});
     $(this).css({'background': '#007fff', 'color': 'white'});

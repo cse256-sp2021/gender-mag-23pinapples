@@ -296,6 +296,31 @@ function update_effective_user() {
     
 }
 
+var includeIP = define_new_dialog("includeIP", title="Include inheritable permissions from this object's parent", options = {
+    height: 150,
+    width: 520,
+})
+$('#info-circle-include-inherit-parent').click(function(){
+    $('#includeIP').dialog("open");
+    $('#includeIP').html("Checking the checkbox will make the permissions for this file the same as its parent object.");
+    $('#includeIP').dialog({
+        closeText: "Close"
+    });
+})
+
+var replaceChild = define_new_dialog("replaceChild", title='Replace all child object permissions with inheritable permissions', options = {
+    height: 150,
+    width: 620,
+})
+$('#info-circle-replace-all-child').click(function(){
+    $('#replaceChild').dialog("open");
+    $('#replaceChild').html("Checking this checkbox will replace all permissions for any child object with permissions from its object.");
+    $('#replaceChild').dialog({
+        closeText: "Close"
+    });
+})
+
+
 // TODO: redo everything to use the new user_select_dialog
 function open_user_select(to_populate) {
     $('#user_select_dialog').attr('to_populate', to_populate)
@@ -361,10 +386,10 @@ $('#adv_perm_inheritance').change(function(){
     else {
         // has just been turned off - pop up dialog with add/remove/cancel
         $(`<div id="add_remove_cancel" title="Security">
-            Warning: if you proceed, inheritable permissions will no longer propagate to this object.<br/>
-            - Click Add <b> to add and convert parent permissions</b>  as explicit permissions on this object<br/>
-            - Click Remove to <b>remove inherited permissions</b> from this object<br/>
-            - Click Cancel if you do not want to modify inheritance settings at this time.<br/>
+            Warning: if you proceed, current state of inheritable permissions will no longer propagate to this object.<br/>
+            - <b>Click Add: to change current object permissions to those of its parent object.<br/>
+            - <b>Click Remove:</b> to remove inherited permissions from this object.<br/>
+            - <b>Click Cancel:</b> if you do not want to modify inheritance settings at this time.<br/>
         </div>`).dialog({ // TODO: don't create this dialog on the fly
             modal: true,
             width: 400,
@@ -533,19 +558,21 @@ let perm_entry_dialog = $('#permentry').dialog({
 $('#perm_entry_username').html('Select User/Group');
 
 const read = '<span style="color: blue;">■</span>';
-const write = '<span style="color: green;">▲</span>';
-const modify = '<span style="color: orange;">●</span>';
-const execute = '<span style="color: red;">◆</span>';
-const symbols = [execute, read, read, read, `${modify}${write}`, `${modify}${write}`, `${modify}${write}`, `${modify}${write}`, modify, modify, read, '', ''];
+const write = '<span style="color: orange;">●</span>';
+const modify = '<span style="color: red;">▲</span>';
+const execute = '<span style="color: green;">◆</span>';
 
+
+const symbols = [execute, read, read, read, `${modify}${write}`, `${modify}${write}`, `${modify}${write}`, `${modify}${write}`, modify, modify, read, '', ''];
+const type = ["execute", "read", "read", "read", "modify_write",  "modify_write",  "modify_write",  "modify_write", "modify", "modify", "read", '', ''];
 let i=0;
 for(let p of Object.values(permissions)){
     let row = $(`<tr id="perm_entry_row_${p}">
-        <td id="perm_entry_row_${p}_cell">${p} ${symbols[i]}</td>
+        <td id="perm_entry_row_${type[i]}_${p}">${p} ${symbols[i]}</td>
     </tr>`);
     i++;
     for(let ace_type of ['allow', 'deny']) {
-        row.append(`<td id="perm_entry_row_${p}_${ace_type}" class="perm_entry_checkcell" perm="${p}" type="${ace_type}"></td>`)
+        row.append(`<td id="perm_entry_row_${p}_${type[i-1]}_${ace_type}" class="perm_entry_checkcell" perm="${p}" type="${ace_type}"></td>`)
     }
     $('#perm_entry_table').append(row)
 }   
@@ -558,6 +585,7 @@ $('#adv_perm_edit').click(function(){
 $('#perm_entry_change_user').click(function(){
     open_user_select('perm_entry_username') 
 })
+
 
 
 perm_entry_user_observer = new MutationObserver(function(mutationsList, observer){

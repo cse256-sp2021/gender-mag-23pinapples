@@ -532,6 +532,8 @@ function get_explanation_text(explanation, user, file, permission) {
 $('#filestructure').css({
     'display':'inline-block',
     'width':'49%',
-    'vertical-align': 'top'
+    'vertical-align': 'top',
+  
+
 })
-$('#filestructure').after('<div id="sidepanel" style="display:inline-block;width:49%"></div>')
+$('#filestructure').after('<div id="sidepanel" style="display: inline-block; width:44%; position: relative; left: 5%; "></div>')
